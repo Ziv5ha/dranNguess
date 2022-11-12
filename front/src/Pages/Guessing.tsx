@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import CanvasDraw from 'react-canvas-draw';
+import LettersBank from '../Components/LettersBank';
 
 export default function Guessing({
   word,
@@ -23,6 +24,7 @@ export default function Guessing({
         saveData={drawing}
         loadTimeOffset={10}
       />
+      <LettersBank word={word} />;
     </div>
   );
 }

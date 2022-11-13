@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import CanvasDraw from 'react-canvas-draw';
+import BrushSizePicker from '../Components/BrushSizePicker';
 import ColorPickers from '../Components/ColorPickers';
 
 export default function Drawing({
@@ -10,6 +11,7 @@ export default function Drawing({
   player2: string;
 }) {
   const [brushColor, setBrushColor] = useState('#000000');
+  const [brushSize, setBrushSize] = useState(4);
   const canvasRef = useRef<CanvasDraw>(null);
   const undoFunc = () => {
     canvasRef.current?.undo();
@@ -19,6 +21,7 @@ export default function Drawing({
   };
   const submitFunc = () => {
     const drawing = canvasRef.current?.getSaveData();
+    console.log(drawing);
   };
   return (
     <div>
@@ -43,11 +46,13 @@ export default function Drawing({
       </div>
       <CanvasDraw
         ref={canvasRef}
-        brushColor={brushColor}
         hideInterface={true}
         hideGrid={true}
+        brushColor={brushColor}
+        brushRadius={brushSize}
       />
       <ColorPickers setBrushColor={setBrushColor} />
+      <BrushSizePicker brushSize={brushSize} setBrushSize={setBrushSize} />
     </div>
   );
 }

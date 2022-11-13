@@ -12,22 +12,20 @@ export default function ChooseWord({
     hard: '',
   });
   useEffect(() => {
-    async () => {
-      let easy = '';
-      let medium = '';
-      let hard = '';
-      while (
-        !(easy.length === 3 || easy.length === 4) &&
-        medium.length !== 5 &&
-        hard.length < 6
-      ) {
-        const [word] = randomWord(1);
-        if ((word.length === 3 || word.length === 4) && !easy) easy = word;
-        if (word.length === 5 && !medium) medium = word;
-        if (word.length >= 6 && !hard) hard = word;
-      }
-      setWordOptions({ easy, medium, hard });
-    };
+    let easy = '';
+    let medium = '';
+    let hard = '';
+    while (
+      !(easy.length === 3 || easy.length === 4) &&
+      medium.length !== 5 &&
+      hard.length < 6
+    ) {
+      const [word] = randomWord(1);
+      if ((word.length === 3 || word.length === 4) && !easy) easy = word;
+      if (word.length === 5 && !medium) medium = word;
+      if (word.length >= 6 && !hard) hard = word;
+    }
+    setWordOptions({ easy, medium, hard });
   }, []);
 
   const chooseWordFunc = (word: string) => {

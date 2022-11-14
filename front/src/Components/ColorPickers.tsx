@@ -6,7 +6,7 @@ export default function ColorPickers({
   setBrushColor: React.Dispatch<React.SetStateAction<string>>;
 }) {
   return (
-    <div>
+    <div className='color-pickers'>
       {/* red => yellow */}
       <button
         onClick={() => {

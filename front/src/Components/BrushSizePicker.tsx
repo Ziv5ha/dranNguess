@@ -23,7 +23,7 @@ export default function BrushSizePicker({
     });
   };
   return (
-    <div>
+    <div className='brush-size-pickers'>
       <button className='brush-size-btn' onClick={increaseBrushSize}>
         +
       </button>

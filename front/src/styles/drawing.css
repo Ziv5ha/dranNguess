@@ -1,0 +1,64 @@
+/* tools buttons */
+.game-tools {
+  display: flex;
+  flex-direction: row;
+  margin: 0.3em 0;
+}
+.tool-btn {
+  margin: 0 0.3em;
+  width: 2em;
+  padding: 0.3em;
+  border: none;
+  border-radius: 0.2em;
+  box-shadow: 0 0 5px 1px rgb(130, 130, 130);
+  font-size: 1em;
+  background-color: #3b3486;
+  color: white;
+}
+
+/* canvas */
+.canvas {
+  height: min-content;
+  width: min-content;
+  border: 4mm ridge #7743db;
+}
+/* colors and brush size buttons */
+.tools {
+  display: flex;
+  flex-direction: row;
+  margin: 0.3em 0;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.color-pickers {
+  margin: 0.3em 0;
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 0.1em 0.1em;
+}
+.color-pickers > button {
+  font-size: 10vw;
+  border: none;
+  background-color: #fcfdf2;
+  padding: 0;
+  margin: 0;
+}
+.brush-size-pickers {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  background-color: #3b3486;
+  color: white;
+  padding: 0.1em;
+  border-radius: 0.2em;
+}
+.brush-size-pickers > button {
+  font-size: 5vw;
+  padding: 0.3em;
+  border: none;
+  background-color: #3b3486;
+  color: white;
+  /* padding: 0;
+  margin: 0; */
+}

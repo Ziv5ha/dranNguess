@@ -1,3 +1,4 @@
+import { DataConnection } from 'peerjs';
 import React, { useState, useRef } from 'react';
 import CanvasDraw from 'react-canvas-draw';
 import BrushSizePicker from '../Components/BrushSizePicker';
@@ -6,9 +7,15 @@ import ColorPickers from '../Components/ColorPickers';
 export default function Drawing({
   word,
   player2,
+  score,
+  conn,
+  setGameStage,
 }: {
   word: string;
   player2: string;
+  score: number;
+  conn: DataConnection | null;
+  setGameStage: React.Dispatch<React.SetStateAction<GameStages>>;
 }) {
   const [brushColor, setBrushColor] = useState('#000000');
   const [brushSize, setBrushSize] = useState(4);
@@ -21,12 +28,13 @@ export default function Drawing({
   };
   const submitFunc = () => {
     const drawing = canvasRef.current?.getSaveData();
-    console.log(drawing);
+    conn?.send({ type: 'drawing', word, drawing });
+    setGameStage('waiting');
   };
   return (
-    <div>
+    <div className='view'>
       <div className='header'>
-        <div className='score'>{0}</div>
+        <div className='score'>{score}</div>
         <div className='description'>
           you are drawing {word.toUpperCase()}
           <br />

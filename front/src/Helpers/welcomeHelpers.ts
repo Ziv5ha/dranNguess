@@ -6,3 +6,6 @@ export const generateRoomCode = (): string => {
   }
   return code;
 };
+export const generateUsername = () => {
+  return `Player${Math.floor(Math.random() * 1000)}`;
+};

@@ -1,33 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import randomWord from 'random-words';
+import { chooseWords } from '../Helpers/chooseWordHelprs';
 
 export default function ChooseWord({
   setWord,
 }: {
   setWord: React.Dispatch<React.SetStateAction<string>>;
 }) {
-  const [wordOptions, setWordOptions] = useState({
+  const [wordsOptions, setWordsOptions] = useState({
     easy: '',
     medium: '',
     hard: '',
   });
+
   useEffect(() => {
-    async () => {
-      let easy = '';
-      let medium = '';
-      let hard = '';
-      while (
-        !(easy.length === 3 || easy.length === 4) &&
-        medium.length !== 5 &&
-        hard.length < 6
-      ) {
-        const [word] = randomWord(1);
-        if ((word.length === 3 || word.length === 4) && !easy) easy = word;
-        if (word.length === 5 && !medium) medium = word;
-        if (word.length >= 6 && !hard) hard = word;
-      }
-      setWordOptions({ easy, medium, hard });
-    };
+    setWordsOptions(chooseWords());
   }, []);
 
   const chooseWordFunc = (word: string) => {
@@ -39,21 +25,21 @@ export default function ChooseWord({
       <h1>Choose Word:</h1>
       <button
         className='easy-word-btn'
-        onClick={() => chooseWordFunc(wordOptions.easy)}
+        onClick={() => chooseWordFunc(wordsOptions.easy)}
       >
-        {wordOptions.easy}
+        {wordsOptions.easy}
       </button>
       <button
         className='medium-word-btn'
-        onClick={() => chooseWordFunc(wordOptions.medium)}
+        onClick={() => chooseWordFunc(wordsOptions.medium)}
       >
-        {wordOptions.medium}
+        {wordsOptions.medium}
       </button>
       <button
         className='hard-word-btn'
-        onClick={() => chooseWordFunc(wordOptions.hard)}
+        onClick={() => chooseWordFunc(wordsOptions.hard)}
       >
-        {wordOptions.hard}
+        {wordsOptions.hard}
       </button>
     </div>
   );

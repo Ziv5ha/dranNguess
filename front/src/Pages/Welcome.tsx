@@ -27,13 +27,11 @@ export default function Welcome({
   const RoomCodeRef = useRef<HTMLInputElement>(null);
 
   const createRoom = () => {
-    // To Add: create Peer Connection
     const username = usernameRef.current?.value || player1;
     createGame(conn, peerRef, setConn, setGameStage);
     setPlayer1(username);
   };
   const joinRoom = () => {
-    // To Add: join existing peer connection
     // To Add: Error messages (room id full and room does not exist)
     const roomCodeInput = RoomCodeRef.current?.value || '';
     const username = usernameRef.current?.value || player1;
@@ -79,10 +77,13 @@ export default function Welcome({
         <div className='devider'>
           <span className='devider-text'>or</span>
           <div className='devide-line'></div>
-          {/* <div className='devide-line'></div> */}
         </div>
-        <span>create room: {lobbyID}</span>
-        <button onClick={createRoom} className='create-join-btn'>
+        {/* <span>create room: {lobbyID}</span> */}
+        <button
+          onClick={createRoom}
+          className='create-join-btn'
+          disabled={!lobbyID}
+        >
           Create Room
         </button>
       </div>

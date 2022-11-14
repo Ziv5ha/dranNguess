@@ -101,4 +101,32 @@ export const joinGame = (
   }
 };
 
+export const manageDataFlow = (
+  data: any,
+  setPlayer2: React.Dispatch<React.SetStateAction<string>>,
+  setScore: React.Dispatch<React.SetStateAction<number>>,
+  setWord: React.Dispatch<React.SetStateAction<string>>,
+  setDrawing: React.Dispatch<React.SetStateAction<string>>
+) => {
+  console.log('recieved data');
+  console.log(data);
+
+  switch (data.type) {
+    case 'username':
+      setPlayer2(data.username);
+      break;
+    case 'drawing':
+      setWord(data.word);
+      setDrawing(data.drawing);
+      break;
+    case 'score':
+      setScore((prev) => (prev += data.score));
+      setDrawing('');
+      setWord('');
+      // setTurn((prev) => (prev === player1 ? player2 : player1));
+      break;
+    default:
+      console.log(data);
+      break;
+  }
 };

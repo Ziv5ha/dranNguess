@@ -6,47 +6,38 @@ import { generateRoomCode, generateUsername } from '../Helpers/welcomeHelpers';
 
 export default function Welcome({
   lobbyID,
+  player1,
   conn,
   peerRef,
   setConn,
   setGameStage,
   setLobbyID,
   setPlayer1,
-  setPlayer2,
 }: {
   lobbyID: string;
+  player1: string;
   conn: null | DataConnection;
   peerRef: React.MutableRefObject<Peer | null>;
   setConn: React.Dispatch<React.SetStateAction<DataConnection | null>>;
   setGameStage: React.Dispatch<React.SetStateAction<GameStages>>;
   setLobbyID: React.Dispatch<React.SetStateAction<string | null>>;
   setPlayer1: React.Dispatch<React.SetStateAction<string>>;
-  setPlayer2: React.Dispatch<React.SetStateAction<string>>;
 }) {
   const usernameRef = useRef<HTMLInputElement>(null);
   const RoomCodeRef = useRef<HTMLInputElement>(null);
 
   const createRoom = () => {
     // To Add: create Peer Connection
-    const username = usernameRef.current?.value || generateUsername();
-    createGame(
-      username,
-      conn,
-      peerRef,
-      setConn,
-      setGameStage,
-      setLobbyID,
-      setPlayer2
-    );
+    const username = usernameRef.current?.value || player1;
+    createGame(conn, peerRef, setConn, setGameStage);
     setPlayer1(username);
   };
   const joinRoom = () => {
     // To Add: join existing peer connection
     // To Add: Error messages (room id full and room does not exist)
     const roomCodeInput = RoomCodeRef.current?.value || '';
-    const username = usernameRef.current?.value || generateUsername();
-    console.log('connnecting...');
-
+    const username = usernameRef.current?.value || player1;
+    setPlayer1(username);
     joinGame(
       roomCodeInput,
       username,
@@ -54,8 +45,7 @@ export default function Welcome({
       peerRef,
       setConn,
       setGameStage,
-      setLobbyID,
-      setPlayer2
+      setLobbyID
     );
   };
   return (
@@ -67,7 +57,7 @@ export default function Welcome({
         <label htmlFor='usename'>please enter your username:</label>
         <input
           id='usename'
-          placeholder='Username'
+          placeholder={player1}
           ref={usernameRef}
           className='welcome-input username-input'
         />

@@ -7,11 +7,13 @@ import ColorPickers from '../Components/ColorPickers';
 export default function Drawing({
   word,
   player2,
+  score,
   conn,
   setGameStage,
 }: {
   word: string;
   player2: string;
+  score: number;
   conn: DataConnection | null;
   setGameStage: React.Dispatch<React.SetStateAction<GameStages>>;
 }) {
@@ -32,7 +34,7 @@ export default function Drawing({
   return (
     <div className='view'>
       <div className='header'>
-        <div className='score'>{0}</div>
+        <div className='score'>{score}</div>
         <div className='description'>
           you are drawing {word.toUpperCase()}
           <br />

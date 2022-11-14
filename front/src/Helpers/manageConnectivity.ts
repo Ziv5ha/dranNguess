@@ -1,13 +1,10 @@
 import Peer, { DataConnection } from 'peerjs';
 
 export const createGame = (
-  username: string,
   conn: null | DataConnection,
   peerRef: React.MutableRefObject<Peer | null>,
   setConn: React.Dispatch<React.SetStateAction<DataConnection | null>>,
-  setGameStage: React.Dispatch<React.SetStateAction<GameStages>>,
-  setLobbyID: React.Dispatch<React.SetStateAction<string | null>>,
-  setPlayer2: React.Dispatch<React.SetStateAction<string>>
+  setGameStage: React.Dispatch<React.SetStateAction<GameStages>>
 ) => {
   if (peerRef.current) {
     const peer = peerRef.current;
@@ -25,8 +22,6 @@ export const createGame = (
         return;
       }
 
-      const data = { type: 'username', data: username };
-      c.send(data);
       console.log('Connected to: ' + c.peer);
       setConn(c);
       setGameStage('chooseWord');
@@ -60,8 +55,7 @@ export const joinGame = (
   peerRef: React.MutableRefObject<Peer | null>,
   setConn: React.Dispatch<React.SetStateAction<DataConnection | null>>,
   setGameStage: React.Dispatch<React.SetStateAction<GameStages>>,
-  setLobbyID: React.Dispatch<React.SetStateAction<string | null>>,
-  setPlayer2: React.Dispatch<React.SetStateAction<string>>
+  setLobbyID: React.Dispatch<React.SetStateAction<string | null>>
 ) => {
   if (prevConn) {
     prevConn.close();
@@ -73,7 +67,7 @@ export const joinGame = (
 
     conn.on('open', () => {
       console.log('Connected to: ' + conn.peer);
-      const data = { type: 'username', data: username };
+      const data = { type: 'username', username };
       conn.send(data);
       setLobbyID(id);
       setGameStage('waiting');
@@ -86,17 +80,6 @@ export const joinGame = (
       setGameStage('welcome');
     });
 
-    conn.on('data', (data: any) => {
-      console.log(data);
-      switch (data.type) {
-        case 'username':
-          setPlayer2(data.data);
-          break;
-
-        default:
-          break;
-      }
-    });
     peerRef.current = peer;
   }
 };

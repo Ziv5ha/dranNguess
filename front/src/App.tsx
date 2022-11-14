@@ -7,12 +7,13 @@ import Waiting from './Pages/Waiting';
 import ChooseWord from './Pages/ChooseWord';
 import './styles/global.css';
 import { manageDataFlow } from './Helpers/manageConnectivity';
+import { generateUsername } from './Helpers/welcomeHelpers';
 
 function App() {
   const [gameStage, setGameStage] = useState<GameStages>('welcome');
   const [lobbyID, setLobbyID] = useState<null | string>(null);
   const [conn, setConn] = useState<null | DataConnection>(null);
-  const [player1, setPlayer1] = useState('');
+  const [player1, setPlayer1] = useState(generateUsername());
   const [player2, setPlayer2] = useState('');
   const [score, setScore] = useState(0);
   const [turn, setTurn] = useState(player1);
@@ -20,6 +21,7 @@ function App() {
   const [drawing, setDrawing] = useState('');
   const peerRef = useRef<null | Peer>(null);
 
+  // Create Peer
   useEffect(() => {
     const lobbyID = `${Math.floor(Math.random() * 1000000000)}`;
     const myPeer = new Peer(`draw-game-${lobbyID}`, {
@@ -29,7 +31,6 @@ function App() {
       setLobbyID(lobbyID);
     });
     myPeer.on('connection', (conn) => {
-      alert('aha');
       setConn(conn);
     });
     peerRef.current = myPeer;
@@ -41,6 +42,9 @@ function App() {
   useEffect(() => {
     if (conn) {
       console.log('registered for data');
+      console.log('Player1: ' + player1);
+      console.log('Player2: ' + player2);
+
       conn.on('data', (data) => {
         manageDataFlow(data, setPlayer2, setScore, setWord, setDrawing);
       });
@@ -99,13 +103,13 @@ function App() {
       return (
         <Welcome
           lobbyID={lobbyID || ''}
+          player1={player1}
           conn={conn}
           peerRef={peerRef}
           setConn={setConn}
           setGameStage={setGameStage}
           setLobbyID={setLobbyID}
           setPlayer1={setPlayer1}
-          setPlayer2={setPlayer2}
         />
       );
   }

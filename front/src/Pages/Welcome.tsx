@@ -3,6 +3,7 @@ import Peer, { DataConnection } from 'peerjs';
 import React, { useRef } from 'react';
 import { createGame, joinGame } from '../Helpers/manageConnectivity';
 import { generateRoomCode, generateUsername } from '../Helpers/welcomeHelpers';
+import '../styles/welcome.css';
 
 export default function Welcome({
   lobbyID,
@@ -71,7 +72,11 @@ export default function Welcome({
             ref={RoomCodeRef}
           />
         </div>
-        <button onClick={joinRoom} className='create-join-btn'>
+        <button
+          onClick={joinRoom}
+          className='create-join-btn'
+          disabled={!lobbyID}
+        >
           Join
         </button>
         <div className='devider'>

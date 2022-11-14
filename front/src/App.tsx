@@ -5,8 +5,8 @@ import Peer, { DataConnection } from 'peerjs';
 import Guessing from './Pages/Guessing';
 import Waiting from './Pages/Waiting';
 import ChooseWord from './Pages/ChooseWord';
-import Tests from './Pages/tests';
 import './styles/global.css';
+import { manageDataFlow } from './Helpers/manageConnectivity';
 
 function App() {
   const [gameStage, setGameStage] = useState<GameStages>('welcome');
@@ -42,24 +42,58 @@ function App() {
     if (conn) {
       console.log('registered for data');
       conn.on('data', (data) => {
-        console.log(data);
+        manageDataFlow(data, setPlayer2, setScore, setWord, setDrawing);
       });
     }
   }, [conn]);
+  useEffect(() => {
+    if (player2) {
+      const data = { type: 'username', username: player1 };
+      conn?.send(data);
+    }
+  }, [player2]);
 
-  // return <Tests />;
+  useEffect(() => {
+    if (drawing) {
+      setGameStage('guess');
+    }
+    if (word && !drawing) {
+      setGameStage('draw');
+    }
+  }, [word, drawing]);
 
   switch (gameStage) {
     case 'chooseWord':
       return <ChooseWord setWord={setWord} />;
     case 'draw':
-      return <Drawing word={word} player2={player2} />;
+      return (
+        <Drawing
+          word={word}
+          player2={player2}
+          score={score}
+          conn={conn}
+          setGameStage={setGameStage}
+        />
+      );
 
     case 'guess':
-      return <Guessing word={word} player2={player2} drawing={drawing} />;
+      return (
+        <Guessing
+          word={word}
+          player2={player2}
+          drawing={drawing}
+          conn={conn}
+          setGameStage={setGameStage}
+          setWord={setWord}
+          setDrawing={setDrawing}
+          setScore={setScore}
+        />
+      );
 
     case 'waiting':
-      return <Waiting lobbyID={lobbyID || ''} />;
+      return (
+        <Waiting lobbyID={lobbyID || ''} score={score} player2={player2} />
+      );
 
     default:
       return (

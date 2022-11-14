@@ -1,22 +1,51 @@
+import { DataConnection } from 'peerjs';
 import React, { useEffect, useState } from 'react';
 import { shuffleArray } from '../Helpers/GuessingHelpers';
 
-export default function LettersBank({ word }: { word: string }) {
+export default function LettersBank({
+  word,
+  conn,
+  setGameStage,
+  setWord,
+  setDrawing,
+  setScore,
+}: {
+  word: string;
+  conn: DataConnection | null;
+  setGameStage: React.Dispatch<React.SetStateAction<GameStages>>;
+  setWord: React.Dispatch<React.SetStateAction<string>>;
+  setDrawing: React.Dispatch<React.SetStateAction<string>>;
+  setScore: React.Dispatch<React.SetStateAction<number>>;
+}) {
   const abc = 'abcdefghijklmnopqrstuvwxyz';
   const [lettersBank, setLettersBank] = useState<string[]>([]);
   const [answer, setAnswer] = useState('');
 
+  // Create letters buttons
   useEffect(() => {
     const bank = [] as string[];
     word.split('').forEach((char) => bank.push(char));
     while (bank.length < 12) {
-      bank.push(abc[Math.floor(Math.random()) * 26]);
+      bank.push(abc[Math.floor(Math.random() * 26)]);
     }
     shuffleArray(bank);
     setLettersBank(bank);
   }, []);
+
+  // Test win
   useEffect(() => {
-    if (word === answer) console.log('Win!');
+    console.log(answer);
+
+    if (word === answer) {
+      let wordScore = 1;
+      if (word.length > 4) wordScore += 2;
+      if (word.length > 5) wordScore += 2;
+      conn?.send({ type: 'score', score: wordScore });
+      setScore((prev) => (prev += wordScore));
+      setWord('');
+      setDrawing('');
+      setGameStage('chooseWord');
+    }
   }, [answer]);
 
   const addLetterToAnswer = (letter: string, i: number) => {

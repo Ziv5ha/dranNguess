@@ -1,17 +1,22 @@
 import Peer, { DataConnection } from 'peerjs';
 
 import React, { useRef } from 'react';
+import { createGame, joinGame } from '../Helpers/manageConnectivity';
 import { generateRoomCode, generateUsername } from '../Helpers/welcomeHelpers';
 
 export default function Welcome({
+  lobbyID,
   conn,
+  peerRef,
   setConn,
   setGameStage,
   setLobbyID,
   setPlayer1,
   setPlayer2,
 }: {
+  lobbyID: string;
   conn: null | DataConnection;
+  peerRef: React.MutableRefObject<Peer | null>;
   setConn: React.Dispatch<React.SetStateAction<DataConnection | null>>;
   setGameStage: React.Dispatch<React.SetStateAction<GameStages>>;
   setLobbyID: React.Dispatch<React.SetStateAction<string | null>>;
@@ -24,6 +29,15 @@ export default function Welcome({
   const createRoom = () => {
     // To Add: create Peer Connection
     const username = usernameRef.current?.value || generateUsername();
+    createGame(
+      username,
+      conn,
+      peerRef,
+      setConn,
+      setGameStage,
+      setLobbyID,
+      setPlayer2
+    );
     setPlayer1(username);
   };
   const joinRoom = () => {
@@ -33,6 +47,16 @@ export default function Welcome({
     const username = usernameRef.current?.value || generateUsername();
     console.log('connnecting...');
 
+    joinGame(
+      roomCodeInput,
+      username,
+      conn,
+      peerRef,
+      setConn,
+      setGameStage,
+      setLobbyID,
+      setPlayer2
+    );
   };
   return (
     <div className='view'>
@@ -49,9 +73,6 @@ export default function Welcome({
         />
       </div>
 
-      <div>
-        <label htmlFor='room-code-input'>Enter room code</label>
-        <input id='room-code-input' type='number' ref={RoomCodeRef} />
       <div className='create-join'>
         <div className='join'>
           <label htmlFor='room-code-input'>Enter room code:</label>
@@ -62,12 +83,18 @@ export default function Welcome({
             ref={RoomCodeRef}
           />
         </div>
+        <button onClick={joinRoom} className='create-join-btn'>
+          Join
+        </button>
         <div className='devider'>
           <span className='devider-text'>or</span>
           <div className='devide-line'></div>
-          <button onClick={createRoom}>Create Room</button>
           {/* <div className='devide-line'></div> */}
         </div>
+        <span>create room: {lobbyID}</span>
+        <button onClick={createRoom} className='create-join-btn'>
+          Create Room
+        </button>
       </div>
     </div>
   );

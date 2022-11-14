@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Drawing from './Pages/Drawing';
 import Welcome from './Pages/Welcome';
 import Peer, { DataConnection } from 'peerjs';
@@ -6,6 +6,7 @@ import Guessing from './Pages/Guessing';
 import Waiting from './Pages/Waiting';
 import ChooseWord from './Pages/ChooseWord';
 import Tests from './Pages/tests';
+import './styles/global.css';
 
 function App() {
   const [gameStage, setGameStage] = useState<GameStages>('welcome');
@@ -17,6 +18,34 @@ function App() {
   const [turn, setTurn] = useState(player1);
   const [word, setWord] = useState('');
   const [drawing, setDrawing] = useState('');
+  const peerRef = useRef<null | Peer>(null);
+
+  useEffect(() => {
+    const lobbyID = `${Math.floor(Math.random() * 1000000000)}`;
+    const myPeer = new Peer(`draw-game-${lobbyID}`, {
+      debug: 3,
+    });
+    myPeer.on('open', (id) => {
+      setLobbyID(lobbyID);
+    });
+    myPeer.on('connection', (conn) => {
+      alert('aha');
+      setConn(conn);
+    });
+    peerRef.current = myPeer;
+    return () => {
+      myPeer.destroy();
+      peerRef.current = null;
+    };
+  }, []);
+  useEffect(() => {
+    if (conn) {
+      console.log('registered for data');
+      conn.on('data', (data) => {
+        console.log(data);
+      });
+    }
+  }, [conn]);
 
   // return <Tests />;
 
@@ -35,7 +64,9 @@ function App() {
     default:
       return (
         <Welcome
+          lobbyID={lobbyID || ''}
           conn={conn}
+          peerRef={peerRef}
           setConn={setConn}
           setGameStage={setGameStage}
           setLobbyID={setLobbyID}

@@ -1,0 +1,26 @@
+.choose-word-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.word-btn {
+  margin: 0.2em auto;
+  padding: 1em;
+  width: 90%;
+  height: 30%;
+  border: none;
+  border-radius: 0.2em;
+  box-shadow: 0 0 5px 1px rgb(130, 130, 130);
+  font-size: 2em;
+}
+
+.easy {
+  background-color: rgb(53, 222, 53);
+}
+
+.medium {
+  background-color: rgb(255, 247, 2);
+}
+.hard {
+  background-color: rgb(244, 46, 46);
+}

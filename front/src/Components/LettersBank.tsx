@@ -83,9 +83,9 @@ export default function LettersBank({
     )
   );
   const answerLettersElems = answer.split('').map((letter, i) => (
-    <span className='letter-btn' key={letter + i + 'answer'}>
+    <button className='letter-btn' key={letter + i + 'answer'}>
       {letter}
-    </span>
+    </button>
   ));
 
   return (

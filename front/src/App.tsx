@@ -86,6 +86,7 @@ function App() {
           word={word}
           player2={player2}
           drawing={drawing}
+          score={score}
           conn={conn}
           setGameStage={setGameStage}
           setWord={setWord}

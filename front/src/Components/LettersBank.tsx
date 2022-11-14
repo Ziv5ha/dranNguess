@@ -34,8 +34,6 @@ export default function LettersBank({
 
   // Test win
   useEffect(() => {
-    console.log(answer);
-
     if (word === answer) {
       let wordScore = 1;
       if (word.length > 4) wordScore += 2;

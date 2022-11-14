@@ -91,9 +91,6 @@ export const manageDataFlow = (
   setWord: React.Dispatch<React.SetStateAction<string>>,
   setDrawing: React.Dispatch<React.SetStateAction<string>>
 ) => {
-  console.log('recieved data');
-  console.log(data);
-
   switch (data.type) {
     case 'username':
       setPlayer2(data.username);
@@ -106,7 +103,6 @@ export const manageDataFlow = (
       setScore((prev) => (prev += data.score));
       setDrawing('');
       setWord('');
-      // setTurn((prev) => (prev === player1 ? player2 : player1));
       break;
     default:
       console.log(data);
